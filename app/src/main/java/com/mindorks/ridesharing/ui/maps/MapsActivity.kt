@@ -24,8 +24,12 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.microsoft.identity.client.ISingleAccountPublicClientApplication
+import com.microsoft.identity.client.exception.MsalException
 import com.mindorks.ridesharing.R
+import com.mindorks.ridesharing.auth.OutlookAuthManager
 import com.mindorks.ridesharing.data.network.NetworkService
+import com.mindorks.ridesharing.ui.login.LoginActivity
 import com.mindorks.ridesharing.utils.AnimationUtils
 import com.mindorks.ridesharing.utils.MapUtils
 import com.mindorks.ridesharing.utils.PermissionUtils
@@ -86,6 +90,35 @@ class MapsActivity : AppCompatActivity(), MapsView, OnMapReadyCallback {
         nextRideButton.setOnClickListener {
             reset()
         }
+        signOutButton.setOnClickListener {
+            signOut()
+        }
+    }
+
+    private fun signOut() {
+        signOutButton.isEnabled = false
+        OutlookAuthManager.getApplication(this, { app ->
+            app.signOut(object : ISingleAccountPublicClientApplication.SignOutCallback {
+                override fun onSignOut() {
+                    runOnUiThread { openLogin() }
+                }
+
+                override fun onError(exception: MsalException) {
+                    Log.e(TAG, "Outlook sign out failed", exception)
+                    runOnUiThread {
+                        signOutButton.isEnabled = true
+                        Toast.makeText(this@MapsActivity, exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }, { openLogin() })
+    }
+
+    private fun openLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun launchLocationAutoCompleteActivity(requestCode: Int) {

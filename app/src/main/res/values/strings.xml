@@ -16,4 +16,13 @@
     <string name="trip_end">Trip End</string>
     <string name="take_next_ride">Take Next Ride</string>
     <string name="route_not_available_choose_different_locations">Route Not Available: Choose different pickup and drop location</string>
+    <string name="sign_in_title">Welcome to RideSharing</string>
+    <string name="sign_in_subtitle">Sign in to book your ride</string>
+    <string name="sign_in_with_outlook">Sign in with Outlook</string>
+    <string name="sign_in_hint">Works with Outlook.com, Hotmail, Live and Microsoft 365 accounts</string>
+    <string name="sign_in_failed">Sign in failed: %1$s</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="sign_in_not_configured">Outlook sign-in is not configured. Add msalClientId and msalSignatureHash to local.properties.</string>
+    <string name="signed_in_as">Signed in as %1$s</string>
+    <string name="sign_out">Sign out</string>
 </resources>

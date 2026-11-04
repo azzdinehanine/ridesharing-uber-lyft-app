@@ -56,6 +56,22 @@ Your local.properties will like below:
 sdk.dir=PATH_TO_ANDROID_SDK_ON_YOUR_LOCAL_MACHINE    
 apiKey=YOUR_API_KEY
 ```
+* **Sign in with Outlook (Microsoft account)** - the app opens on a login screen that uses
+  [MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-android) so riders can sign in
+  with Outlook.com / Hotmail / Live or Microsoft 365 (work/school) accounts:
+   1. Go to the [Azure portal](https://portal.azure.com) > **Microsoft Entra ID** > **App registrations** > **New registration**.
+   2. Under *Supported account types* choose **Accounts in any organizational directory and personal Microsoft accounts**.
+   3. Open **Authentication** > **Add a platform** > **Android**, enter the package name `com.mindorks.ridesharing`
+      and your signature hash. Get the debug signature hash with:
+      ```
+      keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android | openssl sha1 -binary | openssl base64
+      ```
+   4. Copy the **Application (client) ID** and add both values to `local.properties`:
+      ```
+      msalClientId=YOUR_APPLICATION_CLIENT_ID
+      msalSignatureHash=YOUR_SIGNATURE_HASH
+      ```
+   If these values are missing the login screen shows a "not configured" message.
 * Start implementing features:
    * Start with the `base-project` branch
    * Setup project with basic MVP Architecture.
